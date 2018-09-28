@@ -75,23 +75,24 @@
 
 (setq imba-highlights
       '(("#\s+.+$" . (0 font-lock-comment-face))
-        ("\\b\\([A-Za-z_][A-Za-z_0-9]*\\)[\.]new" . (1 font-lock-type-face))
-        ("[@][A-Za-z_][A-Za-z_0-9]*" . (0 font-lock-variable-name-face))
-        ("\\bdef[ \t]+\\(render\\|build\\|mount\\|setup\\|unmount\\|tikc\\|initialize\\)" . (1 'imba-function-state-name-face))
+        ("\\b\\(export\\|import\\|require\\|Imba\\|route\\([\.-][A-Za-z_]+\\)*\\)\\b" . (1 'imba-keyword-face))        
+        ("\\b\\([A-Za-z_][A-Za-z_0-9-]*\\)[\.]new" . (1 font-lock-type-face))
+        ("[@][A-Za-z_][A-Za-z_0-9-]*" . (0 font-lock-variable-name-face))
+        ("\\bdef[ \t]+\\(render\\|build\\|mount\\|setup\\|unmount\\|tikc\\|initialize\\b\\)" . (1 'imba-function-state-name-face))
         ("\\bexport[ \t]+\\(default\\)" . (1 'imba-function-state-name-face))
-        ("\\b\\(tag\\|def\\|class\\)[ \t]+\\([A-Za-z_][A-Za-z_0-9]+\\)" . (2 'imba-function-name-face))
-        ("\\btag[ \t]+[A-Za-z_][A-Za-z_0-9]*[ \t]+\\([<][ \t]+[A-Za-z_][A-Za-z_0-9]*\\)" . (1 font-lock-type-face))
+        ("\\b\\(tag\\|def\\|class\\)[ \t]+\\([A-Za-z_][A-Za-z_0-9-]+\\)" . (2 'imba-function-name-face))
+        ("\\btag[ \t]+[A-Za-z_][A-Za-z_0-9-]*[ \t]+\\([<][ \t]+[A-Za-z_][A-Za-z_0-9-]*\\)" . (1 font-lock-type-face))
         ("[<]\\(self\\)" . (1 font-lock-constant-face))
         ("[<]\\([A-Za-z_]+\\)" . (1 'imba-string-variable-name-face))
         ("[<]\\([A-Za-z_][A-Za-z_0-9]*\\)" . (1 'imba-string-variable-name-face))
         ("[\'\"].+?[\'\"]" . (0 font-lock-string-face))
-        ("\\([\.][A-Za-z_][A-Za-z_0-9]*\\)" . (1 font-lock-preprocessor-face))
-        ("\\([:][A-Za-z_][A-Za-z_0-9]*\\)" . (1 font-lock-constant-face))
-        ("\\([A-Za-z_][A-Za-z_0-9]*[:\.][ \t]*\\)" . (1 font-lock-constant-face))
-        ("\\([A-Za-z_][A-Za-z_0-9]*\\)[:\.\(\[]" . (1 font-lock-variable-name-face))
-        ("\\b\\(def\\|tag\\|var\\|let\\|const\\|prop\\|new\\|if\\|else\\|when\\|for\\|until\\|while\\|do\\|map\\|class\\|setTimeout\\|setInterval\\|clearTimeout\\|clearInterval\\|parseInt\\|parseFloat\\|__dirname\\|process\\|console\\|document\\|window\\|this\\|self\\)\\b" . (1 font-lock-function-name-face))
-        ("\\b\\(export\\|import\\|require\\|Imba\\)\\b" . (1 'imba-keyword-face))        
-        ("\\b\\(attr\\|super\\|typeof\\|null\\|true\\|false\\|break\\|in\\|of\\|continue\\|as\\|from\\|render\\|unschedule\\|schedule\\|build\\|setup\\|mount\\|unmount\\|tikc\\|render\\|await\\)\\b" . (1 font-lock-keyword-face))
+        ("\\([\.][A-Za-z_][A-Za-z_0-9-]*\\)" . (1 font-lock-preprocessor-face))
+        ("\\([:][A-Za-z_][A-Za-z_0-9-]*\\)" . (1 font-lock-constant-face))
+        ("\\([A-Za-z_][A-Za-z_0-9-]*[:\.][ \t]*\\)" . (1 font-lock-constant-face))
+        ("\\([A-Za-z_][A-Za-z_0-9-]*\\)[:\.\(\[]" . (1 font-lock-variable-name-face))
+        ("\\b\\(return\\|def\\|tag\\|var\\|let\\|const\\|prop\\|new\\|if\\|else\\|when\\|for\\|until\\|while\\|do\\|map\\|class\\|setTimeout\\|setInterval\\|clearTimeout\\|clearInterval\\|parseInt\\|parseFloat\\|__dirname\\|process\\|console\\|document\\|window\\|this\\|then\\|in\\|self\\|delete\\)\\b" . (1 font-lock-function-name-face))
+        ("\\b\\(attr\\|super\\|typeof\\|break\\|in\\|of\\|continue\\|as\\|from\\|render\\|unschedule\\|schedule\\|build\\|setup\\|mount\\|unmount\\|tikc\\|render\\)\\b" . (1 font-lock-keyword-face))
+        ("\\b\\(null\\|true\\|false\\|undefined\\|await\\|async\\)\\b" . (1 font-lock-constant-face))        
         ("\\b\\(var\\|let\\|const\\)[ \t]+\\([A-Za-z_][A-Za-z_0-9]*\\)" . (2 font-lock-variable-name-face))        
         ))
 
@@ -102,11 +103,15 @@
     syntax-table)
   "Syntax table in use in `imba-mode' buffers.")
 
-
 (defun insert-tab-char ()
   "Insert a tab char. (ASCII 9, \t)"
   (interactive)
   (insert "\t"))
+
+(defun toggle-selective-display (column)
+  (interactive "P" )
+  (set-selective-display (or column (unless selective-display (1+ (current-column))))))
+
 
 (define-derived-mode imba-mode nil "Imba"
   "Simple mode to edit Imba.
@@ -117,6 +122,7 @@
   (setq-local comment-multi-line t)
   (setq-local tab-width imba-indent-offset)
   (local-set-key (kbd "TAB") 'insert-tab-char)
+  (local-set-key (kbd "C-+") 'toggle-selective-display)
   (setq font-lock-defaults '(imba-highlights))
   (set-syntax-table imba-mode-syntax-table)
   (set (make-local-variable 'comment-start) "# "))
