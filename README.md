@@ -10,28 +10,36 @@ In your .emacs
 
 ## imba-mode-hook
 
-    (eval-after-load "auto-complete-mode"
-        '(add-to-list 'ac-modes 'imba-mode))
+```lisp
     (add-hook 'imba-mode-hook 
           (quote
            (lambda nil
- 	             (auto-complete-mode 1)
- 	             (ac-config-default)
- 	             (setq-local whitespace-style
-                     (quote
-                         (face trailing tabs tab-mark)))
- 	             (setq-local whitespace-display-mappings (quote ((tab-mark 9 [8594 9] [92 9]))))
- 	             (whitespace-mode t)
-                 (set-face-foreground 'whitespace-tab "lightgray")
-                 (set-face-background 'whitespace-tab nil)
-                 (set-face-foreground 'whitespace-trailing "HotPink")
-                 (set-face-background 'whitespace-trailing "lightPink")
-	             (setq-local electric-pair-skip-whitespace-chars (quote (9 10)))
-	             (setq-local auto-indent-untabify-on-visit-file 'tabify)
-                 (setq-local auto-indent-backward-delete-char-behavior nil)
-                 (setq-local auto-indent-untabify-on-save-file 'tabify)
-                 (setq-local auto-indent-newline-function 'newline-and-indent)
-                 (setq-local adaptive-fill-regexp "[\t]*"))))
+             (auto-complete-mode 1)
+             (setq ac-modes (append ac-modes '(imba-mode)))
+             (ac-config-default)
+             (setq-local whitespace-style
+                         (quote
+                          (face trailing tabs tab-mark)))
+             (setq-local whitespace-display-mappings (quote ((tab-mark 9 [8594 9] [92 9]))))
+             (whitespace-mode t)
+             (set-face-foreground 'whitespace-tab "lightgray")
+             (set-face-background 'whitespace-tab nil)
+             (set-face-foreground 'whitespace-trailing "HotPink")
+             (set-face-background 'whitespace-trailing "lightPink")
+	         (setq-local electric-pair-skip-whitespace-chars (quote (9 10)))
+             (setq-local auto-indent-untabify-on-visit-file 'tabify)
+             (setq-local auto-indent-backward-delete-char-behavior nil)
+             (setq-local auto-indent-untabify-on-save-file 'tabify)
+             (setq-local auto-indent-newline-function 'newline-and-indent)
+             (setq-local adaptive-fill-regexp "[\t]*")
+             (outline-minor-mode 1)
+             (setq-local outline-regexp "[\t ]*\\(def\\|class\\|export\\|tag\\|else +if\\|if\\|else\\|[<][a-zA-z]+\\)")
+             )))
+```
+
+## auto-complete-mode dict imba-mode
+
+ac-dictionary-directories - add "/place/where/you/put/it/dict"
 
 
 ## Screenshot

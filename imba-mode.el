@@ -108,11 +108,6 @@
   (interactive)
   (insert "\t"))
 
-(defun toggle-selective-display (column)
-  (interactive "P" )
-  (set-selective-display (or column (unless selective-display (1+ (current-column))))))
-
-
 (define-derived-mode imba-mode nil "Imba"
   "Simple mode to edit Imba.
 
@@ -121,8 +116,9 @@
   (setq-local indent-tabs-mode t)
   (setq-local comment-multi-line t)
   (setq-local tab-width imba-indent-offset)
-  (local-set-key (kbd "TAB") 'insert-tab-char)
-  (local-set-key (kbd "C-+") 'toggle-selective-display)
+  (local-set-key (kbd "<tab>") 'insert-tab-char)
+  (local-set-key (kbd "<C-tab>") 'indent-rigidly-right-to-tab-stop)
+  (local-set-key (kbd "<C-M-tab>") 'indent-rigidly-left-to-tab-stop)
   (setq font-lock-defaults '(imba-highlights))
   (set-syntax-table imba-mode-syntax-table)
   (set (make-local-variable 'comment-start) "# "))
