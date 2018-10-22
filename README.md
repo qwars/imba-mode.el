@@ -33,7 +33,7 @@ In your .emacs
              (setq-local auto-indent-newline-function 'newline-and-indent)
              (setq-local adaptive-fill-regexp "[\t]*")
              (outline-minor-mode 1)
-             (setq-local outline-regexp "[\t ]*\\(def\\|class\\|export\\|tag\\|else +if\\|if\\|else\\|[<][a-zA-z]+\\)")
+             (setq-local outline-regexp "[[:space:]]*\\(tag...\\|def...\\|\\bdo....\\|class.\\|export\\)")
              )))
 ```
 
