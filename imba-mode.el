@@ -74,7 +74,7 @@
   :group 'imba )
 
 (setq imba-highlights
-      '(("#\s+.+$" . (0 font-lock-comment-face))
+      '(("#\\s+.+$" . (0 font-lock-comment-face))
         ("\\b\\(export\\|import\\|require\\|Imba\\|route\\([\.-][A-Za-z_]+\\)*\\)\\b" . (1 'imba-keyword-face))        
         ("\\b\\([A-Za-z_][A-Za-z_0-9-]*\\)[\.]new" . (1 font-lock-type-face))
         ("[@][A-Za-z_][A-Za-z_0-9-]*" . (0 font-lock-variable-name-face))
@@ -90,7 +90,7 @@
         ("\\([:][A-Za-z_][A-Za-z_0-9-]*\\)" . (1 font-lock-constant-face))
         ("\\([A-Za-z_][A-Za-z_0-9-]*[:\.][ \t]*\\)" . (1 font-lock-constant-face))
         ("\\([A-Za-z_][A-Za-z_0-9-]*\\)[:\.\(\[]" . (1 font-lock-variable-name-face))
-        ("\\b\\(return\\|def\\|tag\\|var\\|let\\|const\\|prop\\|new\\|if\\|else\\|when\\|for\\|until\\|while\\|do\\|map\\|class\\|setTimeout\\|setInterval\\|clearTimeout\\|clearInterval\\|parseInt\\|parseFloat\\|__dirname\\|process\\|console\\|document\\|window\\|this\\|then\\|in\\|self\\|delete\\)\\b" . (1 font-lock-function-name-face))
+        ("\\b\\(return\\|def\\|tag\\|var\\|let\\|const\\|prop\\|new\\|and\\|not\\|if\\|unless\\|else\\|when\\|for\\|until\\|while\\|do\\|map\\|class\\|setTimeout\\|setInterval\\|clearTimeout\\|clearInterval\\|parseInt\\|parseFloat\\|__dirname\\|process\\|console\\|document\\|window\\|this\\|then\\|in\\|self\\|delete\\)\\b" . (1 font-lock-function-name-face))
         ("\\b\\(attr\\|super\\|typeof\\|break\\|in\\|of\\|continue\\|as\\|from\\|render\\|unschedule\\|schedule\\|build\\|setup\\|mount\\|unmount\\|tikc\\|render\\)\\b" . (1 font-lock-keyword-face))
         ("\\b\\(null\\|true\\|false\\|undefined\\|await\\|async\\)\\b" . (1 font-lock-constant-face))        
         ("\\b\\(var\\|let\\|const\\)[ \t]+\\([A-Za-z_][A-Za-z_0-9]*\\)" . (2 font-lock-variable-name-face))        
