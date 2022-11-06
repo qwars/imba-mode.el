@@ -45,6 +45,3 @@ ac-dictionary-directories - add "/place/where/you/put/it/dict"
 ## Screenshot
 
 ![Screen](https://raw.githubusercontent.com/qwars/imba-mode.el/c3a9b54cc4d313f517e85687ec53c4b1f7bfda8d/screen.png)
-
-## TODO
-    [ ] - code `else if /[#]\w+/.test( window:location:hash )` - imba-highlights add RegExp
