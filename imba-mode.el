@@ -103,6 +103,7 @@
   (interactive)
   (insert "\t"))
 
+;;;###autoload
 (define-derived-mode imba-mode nil "Imba"
   "Simple mode to edit Imba.
 
