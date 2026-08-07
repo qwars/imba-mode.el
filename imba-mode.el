@@ -102,13 +102,15 @@ Nil отключает словарь."
 ;; ---------- Автодополнение ----------
 
 (defconst imba-keywords
-  '("and" "as" "async" "attr" "await" "break" "build" "by" "class"
-    "const" "continue" "def" "delete" "do" "elif" "else" "export"
-    "extern" "false" "for" "from" "if" "import" "in" "initialize"
-    "let" "map" "mount" "new" "no" "not" "null" "of" "or" "own"
-    "prop" "render" "require" "return" "schedule" "self" "setup"
-    "super" "switch" "tag" "then" "this" "tick" "true" "undefined"
-    "unmount" "unschedule" "until" "var" "when" "while" "yes")
+  '("alt" "and" "as" "async" "attr" "await" "break" "build" "by"
+    "class" "const" "continue" "createElement" "css" "ctrl" "data" "def"
+    "delete" "do" "dom" "elif" "else" "export" "extern" "false"
+    "flag" "flags" "for" "from" "if" "import" "in" "initialize"
+    "let" "map" "meta" "mount" "new" "no" "not" "null"
+    "of" "or" "own" "prop" "render" "require" "return" "schedule"
+    "self" "setup" "shift" "super" "switch" "tag" "then" "this"
+    "tick" "trigger" "true" "undefined" "unflag" "unless" "unmount"
+    "unschedule" "until" "var" "when" "while" "yes")
   "Imba language keywords for completion.")
 
 (defconst imba-globals
@@ -195,22 +197,24 @@ Nil отключает словарь."
   "Completion at point for Imba.
 Contexts: tag name after <, @instance variables, keywords and globals."
   (unless (nth 8 (syntax-ppss))
-    (cond
-     ;; <, <div, <App — HTML-теги, self и объявленные в буфере tag
-     ((looking-back "<[A-Za-z_][A-Za-z_0-9-]*\\|<" (line-beginning-position))
-      (list (1+ (match-beginning 0)) (point)
-            (append '("self") imba-html-tags (imba-buffer-tags))
-            :exclusive 'no))
-     ;; @instance-переменные
-     ((looking-back "@[A-Za-z_][A-Za-z_0-9-]*" (line-beginning-position))
-      (list (match-beginning 0) (point)
-            (imba-instance-variables)
-            :exclusive 'no))
-     ;; ключевые слова и глобали + словарь
-     ((looking-back "[A-Za-z_][A-Za-z_0-9-]*" (line-beginning-position))
-      (list (match-beginning 0) (point)
-            (imba-code-candidates)
-            :exclusive 'no)))))
+    (let* ((end (point))
+           (beg (save-excursion
+                  (skip-chars-backward "A-Za-z_0-9-")
+                  (point)))
+           (prev (char-before beg)))
+      (cond
+       ((eq prev ?<)
+        (list beg end
+              (append '("self") imba-html-tags (imba-buffer-tags))
+              :exclusive 'no))
+       ((eq prev ?@)
+        (list (1- beg) end
+              (imba-instance-variables)
+              :exclusive 'no))
+       (t
+        (list beg end
+              (imba-code-candidates)
+              :exclusive 'no))))))
 
 ;; ---------- Комментарии ----------
 
@@ -260,6 +264,11 @@ from single-line # comments."
   (setq-local syntax-propertize-function #'imba-syntax-propertize)
   (setq-local font-lock-syntactic-face-function #'imba-font-lock-syntactic-face)
   (add-hook 'completion-at-point-functions #'imba-completion-at-point nil t)
+  (setq-local minor-mode-overriding-map-alist
+              `((company-mode . ,(let ((map (make-sparse-keymap)))
+                                   (define-key map (kbd "TAB") #'insert-tab-char)
+                                   (define-key map (kbd "<tab>") #'insert-tab-char)
+                                   map))))
   (local-set-key (kbd "<tab>") 'insert-tab-char)
   (local-set-key (kbd "<C-tab>") 'indent-rigidly-right-to-tab-stop)
   (local-set-key (kbd "<C-M-tab>") 'indent-rigidly-left-to-tab-stop)
